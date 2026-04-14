@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>企业存储人格测试 | 你是哪种存储人？</title>
+<style>
+:root {
+  --bg: #f5f3ef;
+  --bg-card: #ffffff;
+  --accent: #2563eb;
+  --accent-light: #eff4ff;
+  --text-1: #1a1a2e;
+  --text-2: #555770;
+  --text-3: #8b8da3;
+  --border: #e5e5ea;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text-1);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+.container {
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  min-height: 100vh;
+}
+.page { display: none; }
+.page.active { display: flex; flex-direction: column; }
+
+/* LANDING */
+.landing {
+  align-items: center;
+  justify-content: center;
+  min-height: 85vh;
+  text-align: center;
+}
+.landing-badge {
+  width: 100px; height: 100px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52px;
+  margin-bottom: 28px;
+  box-shadow: 0 12px 40px rgba(37,99,235,0.25);
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.landing h1 {
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.35;
+  margin-bottom: 12px;
+}
+.landing .subtitle {
+  font-size: 15px;
+  color: var(--text-2);
+  margin-bottom: 40px;
+  line-height: 1.7;
+}
+.btn-start {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  border: none;
+  color: #fff;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 15px 52px;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(37,99,235,0.3);
+}
+.btn-start:active { transform: scale(0.96); }
+.landing-footer {
+  margin-top: 32px;
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+/* QUIZ */
+.quiz { padding-top: 8px; }
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.progress-bar {
+  flex: 1; height: 6px;
+  background: var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+  border-radius: 6px;
+  transition: width 0.4s ease;
+}
+.progress-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-3);
+  white-space: nowrap;
+  min-width: 55px;
+  text-align: right;
+}
+.question-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  align-self: flex-start;
+}
+.question-text {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.55;
+  margin-bottom: 24px;
+}
+.option {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-1);
+}
+.option:active { transform: scale(0.98); }
+.option.selected {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.option-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.option-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: var(--bg);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-2);
+  flex-shrink: 0;
+}
+.option.selected .option-letter {
+  background: var(--accent);
+  color: #fff;
+}
+.option-text { flex: 1; }
+
+/* RESULT */
+.result {
+  align-items: center;
+  padding-bottom: 60px;
+}
+.result-hero {
+  width: 100%;
+  border-radius: 20px;
+  padding: 36px 24px 28px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+}
+.result-emoji { font-size: 60px; margin-bottom: 12px; }
+.result-type-code {
+  font-family: 'Courier New', 'SF Mono', monospace;
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  margin-bottom: 6px;
+}
+.result-name {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+.result-tagline {
+  font-size: 14px;
+  line-height: 1.75;
+  opacity: 0.88;
+}
+
+.dim-section {
+  width: 100%;
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+}
+.dim-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+}
+.dim-row + .dim-row { border-top: 1px solid var(--border); }
+.dim-label {
+  font-size: 12px;
+  color: var(--text-2);
+  width: 72px;
+  flex-shrink: 0;
+  text-align: center;
+}
+.dim-bar-wrap {
+  flex: 1; height: 8px;
+  background: #eee;
+  border-radius: 8px;
+  margin: 0 8px;
+  overflow: hidden;
+}
+.dim-bar-fill {
+  height: 100%;
+  border-radius: 8px;
+  transition: width 1s ease;
+}
+.dim-pct {
+  font-size: 12px;
+  color: var(--text-2);
+  width: 72px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.card {
+  width: 100%;
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 22px 20px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.card p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text-2);
+}
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+.tag-list li {
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+.tag-good { background: #ecfdf5; color: #059669; }
+.tag-bad { background: #fef2f2; color: #dc2626; }
+
+.truth-card {
+  width: 100%;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 16px;
+  padding: 22px 20px;
+  margin-bottom: 12px;
+}
+.truth-card .card-title { color: #92400e; }
+.truth-card p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #78350f;
+}
+
+.soul-card {
+  width: 100%;
+  border-radius: 16px;
+  padding: 28px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #fafafa, #f0f0f5);
+  border: 1px dashed var(--border);
+}
+.soul-emoji { font-size: 44px; margin-bottom: 8px; }
+.soul-label { font-size: 12px; color: var(--text-3); margin-bottom: 4px; }
+.soul-name { font-size: 17px; font-weight: 700; }
+
+.btn-restart {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  color: var(--text-2);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 13px 36px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+.btn-restart:active { transform: scale(0.96); }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.anim { animation: fadeUp 0.45s ease forwards; }
+.d1{animation-delay:.05s;opacity:0}
+.d2{animation-delay:.12s;opacity:0}
+.d3{animation-delay:.2s;opacity:0}
+.d4{animation-delay:.28s;opacity:0}
+.d5{animation-delay:.36s;opacity:0}
+.d6{animation-delay:.44s;opacity:0}
+.d7{animation-delay:.52s;opacity:0}
+.d8{animation-delay:.6s;opacity:0}
+
+.confetti-wrap {
+  position:fixed;top:0;left:0;right:0;height:100vh;
+  pointer-events:none;z-index:999;overflow:hidden;
+}
+.confetti {
+  position:absolute;top:-12px;
+  animation: fall 2.8s ease-in forwards;
+}
+@keyframes fall {
+  0%{transform:translateY(0) rotate(0);opacity:1}
+  100%{transform:translateY(100vh) rotate(600deg);opacity:0}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div id="page-landing" class="page landing active">
+    <div class="landing-badge">🗄️</div>
+    <h1>你是哪种<br>存储人？</h1>
+    <p class="subtitle">企业存储 16 型人格测试<br>16 道题，测出你的存储灵魂<br>含行业扎心真相，慎入</p>
+    <button class="btn-start" onclick="startQuiz()">开始测试</button>
+    <p class="landing-footer">答题约需 3 分钟 · 可能引起 PTSD</p>
+  </div>
+
+  <div id="page-quiz" class="page quiz">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+      <div class="progress-text" id="counter"></div>
+    </div>
+    <div class="question-tag" id="dimension"></div>
+    <div class="question-text" id="question"></div>
+    <div id="options"></div>
+  </div>
+
+  <div id="page-result" class="page result"></div>
+</div>
+
+<script>
+const questions = [
+  // === E/I 采购哲学 x4 ===
+  {dim:'EI',dimLabel:'💰 采购哲学',text:'业务部门说"我们需要更快的存储"，你的第一步？',options:[
+    {text:'拉最新旗舰产品清单，性能必须留余量，一步到位',score:'E'},
+    {text:'先问清楚到底哪个业务慢了，搞不好调个参数就解决了',score:'I'}
+  ]},
+  {dim:'EI',dimLabel:'💰 采购哲学',text:'SSD 又涨价了，涨了 30%。你的采购计划怎么办？',options:[
+    {text:'该买就买，等它降你业务等得起吗？',score:'E'},
+    {text:'先用 HDD 顶一顶，NAND 颗粒这价格迟早会回来的',score:'I'}
+  ]},
+  {dim:'EI',dimLabel:'💰 采购哲学',text:'厂商销售年底冲业绩，给你一个"史上最低折扣"，但你目前不缺存储。',options:[
+    {text:'买！这价格错过等一年。先囤着，早晚用得上',score:'E'},
+    {text:'谢谢，不需要的东西再便宜也是浪费',score:'I'}
+  ]},
+  {dim:'EI',dimLabel:'💰 采购哲学',text:'项目结项还剩一笔预算，你倾向？',options:[
+    {text:'趁机升级一下硬件，机会难得',score:'E'},
+    {text:'退回去，省下来的钱就是我的 KPI',score:'I'}
+  ]},
+
+  // === S/N 介质信仰 x4 ===
+  {dim:'SN',dimLabel:'⚡ 介质信仰',text:'老板问"我们的存储够不够先进"，你最想展示什么？',options:[
+    {text:'全闪存阵列的 IOPS 数字——快就是正义',score:'S'},
+    {text:'PB 级数据湖的总容量和成本曲线——能装才是本事',score:'N'}
+  ]},
+  {dim:'SN',dimLabel:'⚡ 介质信仰',text:'AI 团队突然找你：我们要 100PB 训练数据存储，下个月上线。',options:[
+    {text:'全闪存 + 高速网络，AI 训练延迟高了等于烧 GPU 的钱',score:'S'},
+    {text:'热数据闪存，训练集放对象存储，100PB 全闪你知道多少钱吗？',score:'N'}
+  ]},
+  {dim:'SN',dimLabel:'⚡ 介质信仰',text:'有人在存储群里说"磁带已死"，你的反应？',options:[
+    {text:'确实，现在闪存降价这么快，磁带迟早淘汰',score:'S'},
+    {text:'说这话的人一定没算过 EB 级归档的 TCO',score:'N'}
+  ]},
+  {dim:'SN',dimLabel:'⚡ 介质信仰',text:'描述你心目中"漂亮的存储架构"：',options:[
+    {text:'整齐的全闪存机柜，指示灯闪烁，安静高效',score:'S'},
+    {text:'热温冷分层各得其所，该快的快该省的省',score:'N'}
+  ]},
+
+  // === T/F 安全理念 x4 ===
+  {dim:'TF',dimLabel:'🛡️ 安全理念',text:'隔壁公司被勒索软件攻击了，赎金 500 万美元。你的第一反应？',options:[
+    {text:'连夜 review 自己的灾备方案，不可变快照有没有开？气隙隔离到位没？',score:'T'},
+    {text:'看了看自己的每日备份脚本，嗯，应该没问题吧……然后继续刷手机',score:'F'}
+  ]},
+  {dim:'TF',dimLabel:'🛡️ 安全理念',text:'你的备份恢复演练频率？',options:[
+    {text:'至少季度一次，不演练的灾备等于没有',score:'T'},
+    {text:'上次演练是……去年？前年？反正备份一直在跑',score:'F'}
+  ]},
+  {dim:'TF',dimLabel:'🛡️ 安全理念',text:'凌晨 2 点收到告警：备份任务失败了。',options:[
+    {text:'立刻起来查，备份窗口不等人，RPO 不能破',score:'T'},
+    {text:'设了个早上 7 点的闹钟，偶尔失败一次正常，明天看日志',score:'F'}
+  ]},
+  {dim:'TF',dimLabel:'🛡️ 安全理念',text:'厂商 SE 在 POC 测试中偷偷把缓存比例调到 80% 跑出了漂亮数据。你发现了。',options:[
+    {text:'当场指出来。POC 不真实等于白测，顺便要求用我的测试脚本重跑',score:'T'},
+    {text:'心里记下了，但没当场说。回头写报告的时候备注一下就行',score:'F'}
+  ]},
+
+  // === J/P 架构哲学 x4 ===
+  {dim:'JP',dimLabel:'🏗️ 架构哲学',text:'公司三个业务线分别想买不同品牌存储，你的立场？',options:[
+    {text:'必须统一品牌和平台，否则运维复杂度会失控',score:'J'},
+    {text:'业务需求不一样，各选最合适的才是正解',score:'P'}
+  ]},
+  {dim:'JP',dimLabel:'🏗️ 架构哲学',text:'老板从行业大会回来说："我看 XX 公司用了统一存储平台，我们也搞一个。"',options:[
+    {text:'太好了！我等这句话很久了，马上出方案',score:'J'},
+    {text:'老板，他们业务跟我们完全不一样，别被 PPT 忽悠了',score:'P'}
+  ]},
+  {dim:'JP',dimLabel:'🏗️ 架构哲学',text:'你理想中的存储管理界面数量？',options:[
+    {text:'最多两个，统一运维是底线',score:'J'},
+    {text:'五六个无所谓，各有所长，习惯了就好',score:'P'}
+  ]},
+  {dim:'JP',dimLabel:'🏗️ 架构哲学',text:'开源存储方案（Ceph/MinIO）vs 商业存储，你更倾向？',options:[
+    {text:'商业方案，出了问题有人兜底，运维体系成熟',score:'J'},
+    {text:'开源方案灵活自由，可控性强，贵的不一定好',score:'P'}
+  ]}
+];
+
+const R={
+  ESTJ:{emoji:'🏰',name:'闪存堡垒指挥官',g:'linear-gradient(135deg,#1e3a8a,#2563eb)',
+    tag:'钱到位，性能拉满，安全拉满，管理拉满。你不是在建存储，你是在建数据帝国。',
+    desc:'你是存储界的完美主义者加掌控狂。预算？那是用来花的。你的机房里全闪存阵列整整齐齐，避风港方案滴水不漏，管理界面统一得像强迫症患者的桌面。领导最爱你，因为你永远不出事；厂商最爱你，因为你永远买最贵的。',
+    truth:'扎心真相：你的存储利用率可能只有 35%，但你会说这叫"为未来预留空间"。SSD 涨价的时候你是全公司最淡定的人——因为你早就囤好了。',
+    good:['决策果断，出手阔绰','安全体系无懈可击','架构整洁，运维高效'],
+    bad:['预算审批的噩梦','存储利用率感人','看到别人用 HDD 会生理不适'],
+    soul:'Dell PowerStore + Cyber Recovery 全家桶',se:'💎'},
+  ESTP:{emoji:'⚡',name:'闪存极客冒险家',g:'linear-gradient(135deg,#9d174d,#e84393)',
+    tag:'又快又猛，每个业务来了都给最好的装备，管它搭不搭配。',
+    desc:'你是技术尝鲜狂魔。新硬件？买！新协议？上！你的机房就像一个存储博览会，什么品牌都有，但每一个都是当时最强的。运维工程师看你的架构图会哭，但不得不承认——性能确实猛。',
+    truth:'扎心真相：你的机房里可能有三代不同厂商的全闪存阵列，最老那台的维保费已经比当年买它还贵了。AI 团队找你要存储的时候你最开心，因为又有理由买新玩具了。',
+    good:['对新技术嗅觉灵敏','每个业务都有最佳方案','厂商活动的 VIP'],
+    bad:['架构图堪比意大利面','你离职公司就瘫痪','三代阵列维保费惊人'],
+    soul:'最新 NVMe 全闪 × 5 个品牌混搭',se:'🏎️'},
+  ESFJ:{emoji:'🛡️',name:'豪华安全管家',g:'linear-gradient(135deg,#92400e,#f39c12)',
+    tag:'用最贵的装备，建最稳的堡垒，但架构嘛……随缘。',
+    desc:'你花钱不眨眼但特别怕出事。驱动你的不是性能焦虑，是安全焦虑。勒索软件新闻你每条都看，备份演练你每次都到场。至于架构统不统一？能恢复就行。',
+    truth:'扎心真相：你花在灾备上的钱可能比生产存储还多。隔壁公司被勒索的那天晚上，你是全公司唯一没睡觉的人——不是因为自己被攻击了，是在检查自己的方案有没有漏洞。',
+    good:['数据安全感 MAX','灾备方案业界标杆','出事时你最淡定'],
+    bad:['灾备预算比存储还高','半夜告警秒回','管理界面开了七八个'],
+    soul:'NetApp + Commvault 避风港旗舰套餐',se:'🔐'},
+  ESFP:{emoji:'🎪',name:'存储派对动物',g:'linear-gradient(135deg,#c2410c,#e17055)',
+    tag:'预算充足，什么好玩买什么，架构自由奔放，安全——明天再说。',
+    desc:'你是存储界的社交达人。每个厂商发布会你都去，每次都带回来一个新玩具。你的机房堪称存储博物馆。备份策略？你相信运气。',
+    truth:'扎心真相：你的机房里有一台存储连你自己都忘了当初为什么买的。POC 测试你做了六家，最后选了请你吃饭最多的那家。别否认。',
+    good:['技术视野极广','所有厂商关系都好','开会时段子最多'],
+    bad:['架构图像意大利面','没人敢动你的环境','勒索软件猎人的最爱'],
+    soul:'这个月刚发布的那个新东西',se:'🎰'},
+  ENTJ:{emoji:'👑',name:'闪存帝国 CEO',g:'linear-gradient(135deg,#4c1d95,#7c3aed)',
+    tag:'性能、安全、管控，三位一体。你的数据中心不是机房，是作品。',
+    desc:'你是存储架构师中的王者。不差钱只是基本操作，你真正追求的是架构的优雅。全闪存是底线，避风港是标配，但最让你自豪的是所有东西都在一个平台上管理。',
+    truth:'扎心真相：你做的存储架构 PPT 比厂商 SE 的还漂亮，CIO 直接拿去给董事会汇报了。但你的完美主义让项目至少延期过两次，因为"这个方案还不够优雅"。',
+    good:['战略眼光一流','架构堪称教科书','PPT 比厂商还好'],
+    bad:['完美主义导致延期','开会容易 diss 同事','财务看到你的预算会晕'],
+    soul:'纯血统企业级统一存储平台',se:'🏛️'},
+  ENTP:{emoji:'🧨',name:'存储搅局者',g:'linear-gradient(135deg,#9d174d,#e84393)',
+    tag:'管什么统一不统一，我有十个方案你选哪个？',
+    desc:'你是那种每次开会都能提出颠覆性方案的人。"为什么不用 S3 替代 NAS？""为什么不试试全磁带冷存储？"点子很多，落地的不多。但偶尔落地一个就能改变整个架构。',
+    truth:'扎心真相：你提过的方案数量是实际落地的 10 倍。你上次在群里说"磁带已死"被人怼了之后，转头就写了一个"磁带复兴论"的方案。你最喜欢的厂商是上个月刚成立的那家。',
+    good:['创新能力强','技术储备丰富','演讲感染力极强'],
+    bad:['三个月换一次路线','运维听到你就紧张','没有项目按原计划完成'],
+    soul:'你自己攒的开源存储集群',se:'🚀'},
+  ENFJ:{emoji:'🎖️',name:'数据守护将军',g:'linear-gradient(135deg,#065f46,#00b894)',
+    tag:'闪存打头阵，安全做后盾，至于架构——百花齐放也是一种美。',
+    desc:'你买好东西是为了保护数据，不是炫耀性能。你是唯一一个会主动提议做恢复演练的人。架构可能不够统一，但 RPO/RTO 指标业界一流。',
+    truth:'扎心真相：隔壁公司被勒索那天你连夜 review 了自己的方案，然后发现……其实已经很完善了。你最大的痛苦不是技术问题，是每年跟领导解释"为什么花了这么多钱但什么事都没发生"。',
+    good:['安全意识极强','团队信任度高','出事时你是主心骨'],
+    bad:['总要解释为什么没出事','防护方案比存储还多','管理界面有点多'],
+    soul:'一整套网络弹性解决方案',se:'🛡️'},
+  ENFP:{emoji:'🌈',name:'存储梦想家',g:'linear-gradient(135deg,#c2410c,#e17055)',
+    tag:'花得起钱，追得了新，就是安全和规范——再说再说。',
+    desc:'你是存储行业的理想主义者。你会因为一个漂亮的架构图兴奋半天，也会因为"这方案太优雅了"而推翻昨天刚定的方案。知识面广，热情高，就是执行力……需要一个 ISTJ 搭档。',
+    truth:'扎心真相：你的方案文档文件夹里有"最终版""最终版2""最终最终版""真的最终版"四个文件。AI 团队来要存储的时候你是全公司最兴奋的人，然后出了三版方案，一版都没落地。',
+    good:['技术热情感染全组','创意层出不穷','厂商最爱邀请你分享'],
+    bad:['方案改了不下十版','灾备停留在 PPT 阶段','运维手册永远在"下周写"'],
+    soul:'一个还在概念阶段的存储新范式',se:'✨'},
+  ISTJ:{emoji:'🏗️',name:'存储老工匠',g:'linear-gradient(135deg,#065f46,#00b894)',
+    tag:'不追新不求贵，但每一块盘、每一份备份都安排得明明白白。',
+    desc:'你是团队里最靠谱的人。预算精打细算，架构统一规范，备份从不缺席。你可能用的不是最贵的设备，但 SLA 达成率全公司第一。运维文档详细到可以出书。',
+    truth:'扎心真相：SSD 涨价 30% 的时候你说"我早说了 HDD 够用"，全组翻白眼但没人反驳得了你。你最讨厌的事情是有人不按文档操作，其次是有人修改了文档不写变更记录。',
+    good:['稳如磐石','文档流程堪称典范','SLA 达成率最高'],
+    bad:['可能错过技术迭代','开会总泼冷水','对新技术有生理性排斥'],
+    soul:'一份维护了五年的运维 SOP 文档',se:'📋'},
+  ISTP:{emoji:'🔧',name:'冷静调参侠',g:'linear-gradient(135deg,#1e3a8a,#2563eb)',
+    tag:'别急着买新的——让我先看看现有的还能榨出多少性能。',
+    desc:'你是存储界的瑞士军刀。不到万不得已绝不花钱，但你对现有设备的调优能力堪称黑魔法。别人觉得该换代的阵列，到你手里调几个参数又能再战三年。',
+    truth:'扎心真相：厂商 SE 来 POC 的时候偷偷调缓存比例，被你当场抓包过。你的调优脚本比厂商的 Best Practice 文档还长。AI 团队来要 100PB 的时候你第一反应是"让我先看看现有的能不能挤一挤"。',
+    good:['调优能力一绝','花最少钱办最大事','硬件寿命延长 50%'],
+    bad:['可能过度优化致脆弱','新人接手你的环境会哭','备份策略偏佛系'],
+    soul:'一份你自己写的性能调优脚本',se:'🔧'},
+  ISFJ:{emoji:'🧸',name:'数据保姆',g:'linear-gradient(135deg,#92400e,#f39c12)',
+    tag:'钱要省着花，但数据一个字节都不能丢。',
+    desc:'你是最贴心的存储管理员。预算不多但安全意识极强，3-2-1 备份法则被你执行得比教科书还标准。你可能用不起全闪存，但你的 RPO 为零。',
+    truth:'扎心真相：凌晨 2 点备份告警你是真的会爬起来看的那种人。同事觉得你过度焦虑，直到有一天真出事了，你 15 分钟恢复完毕，全组沉默。你的焦虑被正名了，但你还是焦虑。',
+    good:['数据零丢失','备份策略完美','成本控制艺术家'],
+    bad:['性能偶尔拉胯','安全焦虑到半夜查监控','架构偏保守不敢创新'],
+    soul:'一套传了三代的备份策略文档',se:'💾'},
+  ISFP:{emoji:'🎨',name:'冷数据艺术家',g:'linear-gradient(135deg,#c2410c,#e17055)',
+    tag:'该省省该花花，管他什么统一不统一，好用就行。',
+    desc:'你是存储界的自由灵魂。对象存储存冷数据、磁带做归档、闲置服务器上搭 MinIO，然后汇报时说"我这方案成本比行业平均低 60%"。架构看着野，但算账时你最硬气。',
+    truth:'扎心真相：你的"退役服务器 MinIO 方案"在预算会上把财务感动哭了，但运维同事看到你的架构图差点辞职。有人说"磁带已死"你会写一篇 3000 字长文反驳。',
+    good:['成本意识一流','善用各种技术','TB 单价全公司最低'],
+    bad:['架构全靠个人经验','没有灾备预算','依赖关系像蜘蛛网'],
+    soul:'一台跑 MinIO 的退役服务器',se:'🎨'},
+  INTJ:{emoji:'🧊',name:'存储架构师·冰',g:'linear-gradient(135deg,#4c1d95,#7c3aed)',
+    tag:'不追贵追对，不求多求精。我的架构图本身就是艺术品。',
+    desc:'你是存储界的建筑大师。不追求最贵的设备，但架构设计堪称完美。花三个月做方案设计，但上线之后三年不用改。',
+    truth:'扎心真相：你画架构图用的时间比施工时间还长。有人改了你的设计你能记仇一整年。老板从大会回来说"别人家用了 XX"的时候，你内心的 OS 是"他们的架构师水平不行才需要那个"。',
+    good:['架构设计能力顶级','长期规划思维','方案极少翻车'],
+    bad:['前期规划时间太长','对"临时方案"过敏','不能接受别人改设计'],
+    soul:'一份你画了三个月的架构设计文档',se:'🧊'},
+  INTP:{emoji:'🔬',name:'存储研究员',g:'linear-gradient(135deg,#1e3a8a,#2563eb)',
+    tag:'让我再研究研究……这个纠删码算法好像可以优化 30%。',
+    desc:'你是团队里的技术大脑。对每种存储技术的底层原理都如数家珍，能跟厂商 SE 讨论纠删码实现细节，也能指出白皮书里的数据有水分。',
+    truth:'扎心真相：你是唯一一个会去读厂商白皮书参考文献的人。POC 测试时你发现 SE 偷调缓存，不是当场指出，而是默默记下来写了一篇技术分析发到群里。从此厂商 SE 看到你就紧张。',
+    good:['技术深度无人能及','能识别厂商吹牛','选型极少踩坑'],
+    bad:['决策速度太慢','可能过度工程化','对运维琐事没耐心'],
+    soul:'一篇你写的存储技术对比分析',se:'🔬'},
+  INFJ:{emoji:'🌙',name:'数据守夜人',g:'linear-gradient(135deg,#92400e,#f39c12)',
+    tag:'不声不响把所有安全漏洞堵上了，你们继续忙。',
+    desc:'你是最安静但最重要的人。精打细算但安全上绝不妥协，默默把备份策略升级了三个版本，直到有一天真出事了——全公司才发现你早就准备好了一切。',
+    truth:'扎心真相：你的灾备方案救过公司一次，但只有 IT 部门知道。年终总结的时候你写了"确保全年数据零丢失"，领导的评语是"保持"。你的功劳和你的性格一样——安静。',
+    good:['关键时刻永远靠得住','安全规划有前瞻性','低调但高效'],
+    bad:['太低调功劳被忽视','不擅长汇报','可能被边缘化'],
+    soul:'一套没人知道但救命的灾备方案',se:'🌙'},
+  INFP:{emoji:'🌿',name:'磁带浪漫主义者',g:'linear-gradient(135deg,#065f46,#00b894)',
+    tag:'预算有限但内心有诗，觉得数据应该被温柔对待。',
+    desc:'你是存储界最有情怀的人。你觉得磁带很酷——安静、节能、能存一辈子。你会给存储池取名字，会因为一个优雅的生命周期策略而感动。架构不统一，备份有时候忘，但你对数据有一种说不出的温柔。Andy，这是你。',
+    truth:'扎心真相：有人在群里说"磁带已死"你会认真写一篇反驳文章。你的公众号关于 LTO 磁带的那篇文章阅读量比任何全闪存文章都高。你偷偷觉得，数据存在磁带上比存在 SSD 上更有安全感。',
+    good:['对存储有真正的热爱','发现被忽视的价值','内容创作能力强'],
+    bad:['决策容易纠结','容易被情怀左右','运维规范嘛……看心情'],
+    soul:'一卷 LTO 磁带 + 一篇公众号文章',se:'🌿'}
+};
+
+let cur=0,sc={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+
+function startQuiz(){
+  document.getElementById('page-landing').classList.remove('active');
+  document.getElementById('page-quiz').classList.add('active');
+  cur=0;sc={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+  render();
+}
+
+function render(){
+  const q=questions[cur];
+  document.getElementById('progress').style.width=(cur/questions.length*100)+'%';
+  document.getElementById('counter').textContent=(cur+1)+' / '+questions.length;
+  document.getElementById('dimension').textContent=q.dimLabel;
+  document.getElementById('question').textContent=q.text;
+  const sh=[...q.options].sort(()=>Math.random()-0.5);
+  document.getElementById('options').innerHTML=sh.map((o,i)=>`
+    <div class="option" onclick="pick(this,'${o.score}')">
+      <div class="option-content">
+        <span class="option-letter">${String.fromCharCode(65+i)}</span>
+        <span class="option-text">${o.text}</span>
+      </div>
+    </div>`).join('');
+  const qe=document.getElementById('question');
+  qe.style.animation='none';qe.offsetHeight;
+  qe.style.animation='fadeUp 0.35s ease forwards';
+}
+
+function pick(el,s){
+  document.querySelectorAll('.option').forEach(o=>o.style.pointerEvents='none');
+  el.classList.add('selected');sc[s]++;
+  setTimeout(()=>{cur++;cur<questions.length?render():showResult();},350);
+}
+
+function showResult(){
+  const t=(sc.E>=sc.I?'E':'I')+(sc.S>=sc.N?'S':'N')+(sc.T>=sc.F?'T':'F')+(sc.J>=sc.P?'J':'P');
+  const r=R[t];
+  document.getElementById('page-quiz').classList.remove('active');
+  const rp=document.getElementById('page-result');
+  rp.classList.add('active');
+  boom();
+
+  const dims=[
+    {l:'💰 豪横',r:'🧮 精算',ls:sc.E,rs:sc.I,c:'#2563eb'},
+    {l:'⚡ 闪存',r:'📦 容量',ls:sc.S,rs:sc.N,c:'#e84393'},
+    {l:'🏰 堡垒',r:'🧘 佛系',ls:sc.T,rs:sc.F,c:'#00b894'},
+    {l:'📐 统一',r:'🧩 百花',ls:sc.J,rs:sc.P,c:'#f39c12'}
+  ];
+
+  rp.innerHTML=`
+    <div class="result-hero anim" style="background:${r.g}">
+      <div class="result-emoji">${r.emoji}</div>
+      <div class="result-type-code">${t}</div>
+      <div class="result-name">${r.name}</div>
+      <div class="result-tagline">${r.tag}</div>
+    </div>
+    <div class="dim-section anim d1">
+      ${dims.map(d=>{const tt=d.ls+d.rs,p=tt>0?Math.round(d.ls/tt*100):50;
+        return`<div class="dim-row"><div class="dim-label">${d.l}</div><div class="dim-bar-wrap"><div class="dim-bar-fill" style="width:${p}%;background:${d.c}"></div></div><div class="dim-pct">${d.r}</div></div>`;}).join('')}
+    </div>
+    <div class="card anim d2"><div class="card-title">📝 性格描述</div><p>${r.desc}</p></div>
+    <div class="truth-card anim d3"><div class="card-title">🔪 扎心真相</div><p>${r.truth}</p></div>
+    <div class="card anim d4"><div class="card-title">💪 你的优势</div><ul class="tag-list">${r.good.map(s=>`<li class="tag-good">${s}</li>`).join('')}</ul></div>
+    <div class="card anim d5"><div class="card-title">😅 你的软肋</div><ul class="tag-list">${r.bad.map(s=>`<li class="tag-bad">${s}</li>`).join('')}</ul></div>
+    <div class="soul-card anim d6"><div class="soul-emoji">${r.se}</div><div class="soul-label">你的灵魂存储产品</div><div class="soul-name">${r.soul}</div></div>
+    <button class="btn-restart anim d7" onclick="restart()">🔄 再测一次</button>`;
+}
+
+function restart(){
+  document.getElementById('page-result').classList.remove('active');
+  document.getElementById('page-result').innerHTML='';
+  document.getElementById('page-landing').classList.add('active');
+}
+
+function boom(){
+  const c=document.createElement('div');c.className='confetti-wrap';document.body.appendChild(c);
+  const cl=['#2563eb','#e84393','#f39c12','#00b894','#7c3aed','#e17055'];
+  for(let i=0;i<50;i++){const p=document.createElement('div');p.className='confetti';
+    p.style.left=Math.random()*100+'%';p.style.width=(6+Math.random()*6)+'px';
+    p.style.height=(6+Math.random()*6)+'px';p.style.background=cl[~~(Math.random()*cl.length)];
+    p.style.borderRadius=Math.random()>.5?'50%':'2px';
+    p.style.animationDelay=Math.random()*1.5+'s';
+    p.style.animationDuration=(2+Math.random()*2)+'s';c.appendChild(p);}
+  setTimeout(()=>c.remove(),4000);
+}
+</script>
+</body>
+</html>
